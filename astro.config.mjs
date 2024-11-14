@@ -9,7 +9,7 @@ export default defineConfig({
   integrations: [vue(), auth()],
   output: "server",
   adapter: vercel(),
-  adapter: node({
-    mode: "standalone"
-  })
+  // adapter: node({
+  //   mode: "standalone"
+  // })
 });
