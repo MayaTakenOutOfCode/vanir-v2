@@ -15,3 +15,17 @@ model Users{
     password    String
     isAdmin     Boolean @default(false)
 }
+
+model Teams{
+    id          Int @id() @default(autoincrement())
+    name        String
+    description String
+    imageSRC    String
+}
+
+model Tourneys{
+    id          Int @id() @default(autoincrement())
+    name        String
+    description String
+    imageSRC    String
+}
