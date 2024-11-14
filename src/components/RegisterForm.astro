@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import type { APIRoute } from "astro";
+import { registerUser } from "../createUser";
 
 // if (Astro.request.method === 'POST') {
 //   // parse form data
@@ -12,9 +14,10 @@ import "../styles/global.css";
 //     await db.insert(User).values({ email, password });
 //   }
 // }
+
 ---
 
-<form method="post">
+<form id="registerForm" method="POST">
   <div class="form-group">
     <div class="input-group col">
       <input class="form-control" type="email" name="email" id="email" placeholder="Email">
@@ -91,3 +94,36 @@ import "../styles/global.css";
     justify-content: space-between;
   }
 </style>
+
+<script>
+  document.getElementById('registerForm')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const repeatPassword = formData.get('repeatPassword');
+
+    // Check if passwords match
+    if (password !== repeatPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // Send data to the API
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert(result.message);
+      // Optionally redirect or reset form here
+    } else {
+      alert(result.message || "Error registering user");
+    }
+  });
+</script>
